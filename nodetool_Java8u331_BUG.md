@@ -6,7 +6,7 @@
 
 ##### JIRA : https://issues.apache.org/jira/browse/CASSANDRA-17581
 
-### I cannot upgrade to latest version of Apache Cassandra or I cannot downgrade my Java to previous version
+### I cannot upgrade to latest version of Apache Cassandra nor I can downgrade my Java to previous version.
 
 ### Following is a quick temporary fix for this issue
 
