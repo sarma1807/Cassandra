@@ -16,8 +16,7 @@ SELECT * FROM users LIMIT 5 ;
 CREATE CUSTOM INDEX ON users (secret_questions) USING 'StorageAttachedIndex' ;
 -- WITH OPTIONS = {'case_sensitive': false, 'normalize': true };
 
-SELECT * FROM users WHERE secret_questions['Favorite Car'] = 'Lexus' ;
-
+SELECT * FROM users WHERE secret_questions contains 'Tesla' ;
 
 UPDATE users
 SET secret_questions = secret_questions + {'Favorite Car':'BMW'}
