@@ -1,3 +1,5 @@
+https://www.datastax.com/blog/eliminate-trade-offs-between-database-ease-use-and-massive-scale-sai-storage-attached
+
 CREATE TABLE users
 (
   email_id         text ,
