@@ -1,4 +1,5 @@
 https://www.datastax.com/blog/eliminate-trade-offs-between-database-ease-use-and-massive-scale-sai-storage-attached
+https://cassandra.apache.org/doc/latest/cassandra/developing/cql/indexing/sai/sai-working-with.html
 
 CREATE TABLE users
 (
@@ -13,10 +14,27 @@ INSERT INTO users (email_id, user_name, secret_questions) VALUES ('queen@gmail.c
 
 SELECT * FROM users LIMIT 5 ;
 
-CREATE CUSTOM INDEX ON users (secret_questions) USING 'StorageAttachedIndex' ;
--- WITH OPTIONS = {'case_sensitive': false, 'normalize': true };
 
+-- StorageAttachedIndex
+CREATE CUSTOM INDEX users_sai_1 ON users (         secret_questions  ) USING 'StorageAttachedIndex' ;
+
+CREATE CUSTOM INDEX users_sai_2 ON users (    KEYS(secret_questions) ) USING 'StorageAttachedIndex' ;
+SELECT * FROM users WHERE secret_questions contains key 'Favorite Car' ;
+
+CREATE CUSTOM INDEX users_sai_3 ON users (  VALUES(secret_questions) ) USING 'StorageAttachedIndex' ;
 SELECT * FROM users WHERE secret_questions contains 'Tesla' ;
+
+CREATE CUSTOM INDEX users_sai_4 ON users ( ENTRIES(secret_questions) ) USING 'StorageAttachedIndex' ;
+SELECT * FROM users WHERE secret_questions['Favorite Car'] = 'Tesla' ;
+
+-- NOTE : index users_sai_1 and users_sai_3 are same
+
+
+-- SAI WITH OPTIONS = {'case_sensitive': false, 'normalize': true };
+
+
+SELECT email_id, secret_questions['Favorite Car'] as FavCar, secret_questions['Favorite Color'] as FavColor, secret_questions['Not In Map'] as InvalidOne FROM users LIMIT 5 ;
+
 
 UPDATE users
 SET secret_questions = secret_questions + {'Favorite Car':'BMW'}
