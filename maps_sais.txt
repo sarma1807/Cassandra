@@ -1,0 +1,39 @@
+CREATE TABLE users
+(
+  email_id         text ,
+  user_name        text ,
+  secret_questions map<text,text> ,
+  PRIMARY KEY ( email_id )
+) ;
+
+INSERT INTO users (email_id, user_name, secret_questions) VALUES ('king@gmail.com',  'king',  {'Favorite Alphabet':'T', 'Favorite Number':'8'} ) ;
+INSERT INTO users (email_id, user_name, secret_questions) VALUES ('queen@gmail.com', 'queen', {'Favorite Color':'Blue', 'Favorite Car':'Tesla'} ) ;
+
+SELECT * FROM users LIMIT 5 ;
+
+CREATE CUSTOM INDEX ON users (secret_questions) USING 'StorageAttachedIndex' ;
+-- WITH OPTIONS = {'case_sensitive': false, 'normalize': true };
+
+SELECT * FROM users WHERE secret_questions['Favorite Car'] = 'Lexus' ;
+
+
+UPDATE users
+SET secret_questions = secret_questions + {'Favorite Car':'BMW'}
+WHERE email_id = 'king@gmail.com' ;
+
+UPDATE users
+SET secret_questions['Favorite Car'] = 'Lexus'
+WHERE email_id = 'king@gmail.com' ;
+
+
+UPDATE users
+SET secret_questions = secret_questions - {'Favorite Number'}
+WHERE email_id = 'king@gmail.com' ;
+
+DELETE secret_questions['Favorite Alphabet']
+FROM users
+WHERE email_id = 'king@gmail.com' ;
+
+DELETE secret_questions
+FROM users
+WHERE email_id = 'king@gmail.com' ;
